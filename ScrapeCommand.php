@@ -31,11 +31,16 @@ class ScrapeCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Hello World');
-
         $scrappy = new Scrappy([
             'url' => $input->getOption('url'),
             'selector' => $input->getOption('selector'),
         ]);
+
+        $elements = $scrappy->scrape();
+
+        foreach ($elements as $element) {
+            $output->writeln($element->textContent);
+        }
+
     }
 }
