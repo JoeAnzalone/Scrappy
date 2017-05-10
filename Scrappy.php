@@ -28,7 +28,7 @@ class Scrappy
         $html = (string) $client->request('GET', $url, [
             'cookies' => $cookie_jar,
             'headers' => $headers,
-            'debug' => true,
+            'debug' => $this->options['debug'],
         ])->getBody();
 
         $crawler = new Crawler();

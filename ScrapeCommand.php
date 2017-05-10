@@ -38,6 +38,12 @@ class ScrapeCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Add a header! Why not!'
+            )
+            ->addOption(
+                'debug',
+                null,
+                null,
+                'If set, Guzzle will be run in debug mode so you can see all the headers and stuff'
             );
     }
 
@@ -48,6 +54,7 @@ class ScrapeCommand extends Command
             'selector' => $input->getOption('selector'),
             'cookies' => $input->getOption('cookies'),
             'headers' => $input->getOption('header'),
+            'debug' => $input->getOption('debug'),
         ]);
 
         $elements = $scrappy->scrape();
