@@ -25,7 +25,7 @@ class Scrappy
 
         $crawler = new Crawler();
         $crawler->addHtmlContent($html);
-        $element = $crawler->filter($this->options['selector']);
+        $element = $crawler->filterXPath($this->options['selector']);
 
         return $element;
     }

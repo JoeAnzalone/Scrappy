@@ -14,7 +14,7 @@ class ScrapeCommand extends Command
     protected function configure()
     {
         $this->setName('scrape')
-            ->setDescription('Outputs \'Hello World\'')
+            ->setDescription('Scrapes a webpage')
             ->addOption(
                 'url',
                 null,
@@ -25,7 +25,7 @@ class ScrapeCommand extends Command
                 'selector',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'A CSS selector'
+                'An XPath selector'
             );
     }
 
@@ -39,7 +39,9 @@ class ScrapeCommand extends Command
         $elements = $scrappy->scrape();
 
         foreach ($elements as $element) {
-            $output->writeln($element->textContent);
+            $output->writeln(
+                trim($element->textContent)
+            );
         }
 
     }
