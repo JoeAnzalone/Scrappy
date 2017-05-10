@@ -23,9 +23,12 @@ class Scrappy
 
         $hostname = parse_url($url, PHP_URL_HOST);
         $cookie_jar = CookieJar::fromArray($cookies, $hostname);
+        $headers = self::parse_header_string($this->options['headers']);
 
         $html = (string) $client->request('GET', $url, [
             'cookies' => $cookie_jar,
+            'headers' => $headers,
+            'debug' => true,
         ])->getBody();
 
         $crawler = new Crawler();
@@ -44,10 +47,27 @@ class Scrappy
 
         $cookies_arr = [];
         foreach ($lines as $line_str) {
-            $line = explode('=', $line_str);
-            $cookies_arr[$line[0]] = $line[1];
+            $cookie = explode('=', $line_str);
+            $cookie = array_map('trim', $cookie);
+            $cookies_arr[$cookie[0]] = $cookie[1];
         }
 
         return $cookies_arr;
+    }
+
+    /**
+     * Convert an array of header strings to a single associative array
+     */
+    private static function parse_header_string(array $header_strings)
+    {
+        $headers = [];
+
+        foreach ($header_strings as $header_string) {
+            $header = explode(':', $header_string, 2);
+            $header = array_map('trim', $header);
+            $headers[$header[0]] = $header[1];
+        }
+
+        return $headers;
     }
 }

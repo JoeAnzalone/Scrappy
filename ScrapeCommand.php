@@ -32,6 +32,12 @@ class ScrapeCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'Some cookies to include'
+            )
+            ->addOption(
+                'header',
+                null,
+                InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                'Add a header! Why not!'
             );
     }
 
@@ -41,6 +47,7 @@ class ScrapeCommand extends Command
             'url' => $input->getOption('url'),
             'selector' => $input->getOption('selector'),
             'cookies' => $input->getOption('cookies'),
+            'headers' => $input->getOption('header'),
         ]);
 
         $elements = $scrappy->scrape();
