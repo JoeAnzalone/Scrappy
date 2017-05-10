@@ -26,6 +26,12 @@ class ScrapeCommand extends Command
                 null,
                 InputOption::VALUE_REQUIRED,
                 'An XPath selector'
+            )
+            ->addOption(
+                'cookies',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Some cookies to include'
             );
     }
 
@@ -34,6 +40,7 @@ class ScrapeCommand extends Command
         $scrappy = new Scrappy([
             'url' => $input->getOption('url'),
             'selector' => $input->getOption('selector'),
+            'cookies' => $input->getOption('cookies'),
         ]);
 
         $elements = $scrappy->scrape();
