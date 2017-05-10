@@ -11,10 +11,30 @@ More feature coming soon?????
 
 ## Usage
 Scrappy has two required parameters (`--url` and `--selector`)
-and two optional parameters (`--cookies` and `--header`)
+
+
+...and a few optional parameters:
+
+* `--cookies`
+* `--header`
+* `--start`
+* `--end`
+* `--interval`
+* `--debug`
+
+### Example
+
+    php app.php scrape \
+        --url=https://htmlbyjoe.com/page/%d \
+        --selector="//*[@class=\"main\"]//*[@class=\"meta-item reblog-link\"]" \
+        --cookies="awesome=true; some_session_id_perhaps=9cdfb439c7876e703e307864c9167a15" \
+        --header="User-Agent: Internet Explorer 6" \
+        --start=1 \
+        --end=5 \
+        --interval=2
+
+### Simpler Example
 
     php app.php scrape \
         --url=https://htmlbyjoe.com \
-        --selector="//*[@class=\"meta-item reblog-link\"]" \
-        --cookies="awesome=true; some_session_id_perhaps=9cdfb439c7876e703e307864c9167a15" \
-        --header="User-Agent: Internet Explorer 6"
+        --selector="//*[@class=\"description\"]"

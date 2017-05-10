@@ -40,6 +40,27 @@ class ScrapeCommand extends Command
                 'Add a header! Why not!'
             )
             ->addOption(
+                'start',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Page number to start at',
+                1
+            )
+            ->addOption(
+                'end',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Page number to end at',
+                1
+            )
+            ->addOption(
+                'interval',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Seconds to wait between HTTP requests',
+                1
+            )
+            ->addOption(
                 'debug',
                 null,
                 null,
@@ -52,18 +73,14 @@ class ScrapeCommand extends Command
         $scrappy = new Scrappy([
             'url' => $input->getOption('url'),
             'selector' => $input->getOption('selector'),
-            'cookies' => $input->getOption('cookies'),
+            'cookies' => (string) $input->getOption('cookies'),
             'headers' => $input->getOption('header'),
+            'start' => (int) $input->getOption('start'),
+            'end' => (int) $input->getOption('end'),
+            'interval' => $input->getOption('interval'),
             'debug' => $input->getOption('debug'),
         ]);
 
-        $elements = $scrappy->scrape();
-
-        foreach ($elements as $element) {
-            $output->writeln(
-                trim($element->textContent)
-            );
-        }
-
+        $scrappy->scrape($output);
     }
 }

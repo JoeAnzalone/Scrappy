@@ -13,9 +13,36 @@ class Scrappy
         $this->options = $options;
     }
 
-    public function scrape()
+    public function scrape($output)
     {
-        $url = $this->options['url'];
+        $end = $this->options['end'];
+
+        $scraped = [];
+
+        for ($i = $this->options['start']; $i <= $end; $i++) {
+            $output->writeln(sprintf('<info>Scraping page %d of %d...</info>', $i, $end));
+            $elements = $this->scrape_page($i);
+
+            foreach ($elements as $element) {
+                $output->writeln(
+                    trim($element->textContent)
+                );
+
+                $scraped[$i] = $element;
+            }
+
+            if ($i !== $end) {
+                // No need to sleep on the last iteration
+                sleep($this->options['interval']);
+            }
+        }
+
+        return $scraped;
+    }
+
+    public function scrape_page(int $page = 1)
+    {
+        $url = sprintf($this->options['url'], $page);
         $cookies_str = $this->options['cookies'];
         $cookies = self::parse_cookies_string($cookies_str);
 
@@ -41,9 +68,10 @@ class Scrappy
     /**
      * Convert a cookie string (taken from a browser, for example) to an array
      */
-    private static function parse_cookies_string(string $string)
+    private static function parse_cookies_string(string $string = '')
     {
         $lines = explode(';', $string);
+        $lines = array_filter($lines); // Remove empty element in case of empty string
 
         $cookies_arr = [];
         foreach ($lines as $line_str) {
